@@ -1,7 +1,7 @@
-#include<iostream>
-using namespace std;
-#include<stdlib.h>
-#include<assert.h>
+//#include<iostream>
+//using namespace std;
+//#include<stdlib.h>
+//#include<assert.h>
 //Stack的析构函数，需要自己写，my_queue的析构函数不需要自己写
 //编译器生成的可以用就不需要自己写
 //套用自定义函数（包含析构函数）的函数不需要写析构函数（编译器会调用自定义函数的析构函数）
@@ -470,103 +470,101 @@ using namespace std;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-class Date
-{
-public:
-
-	int GetTureDay(int year, int month)
-	{
-	static	int monthArray[13] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };
-		if (month == 2 && ((year % 4 == 0 && year & 100 != 0) || (year % 400 == 0)))
-		{
-			return 29;
-		}
-		else
-		{
-			return monthArray[month];
-		}
-	}
-
-	Date(int year=1, int month=1, int day=1)//构造函数-自动调用
-	{
-		_year = year;
-		_month = month;
-		_day = day;
-	}
-	~Date()
-	{
-		_year = 0;
-		_month = 0;
-		_day = 0;
-	}
-
-	bool operator==(const Date& d)
-	{
-		return _year == d._year
-			&& _month == d._month
-			&& _day == d._day;
-	}
-	bool operator>(const Date& d)
-	{
-		if (_year > d._year)
-		{
-			return true;
-		}
-		else if (_year == d._year && _month > d._month)
-		{
-			return true;
-		}
-		else if (_year == d._year && _month == d._month && _day > d._day)
-		{
-			return true;
-		}
-			return false;
-	}
-	bool operator>=(const Date& d)
-	{
-		return *this > d|| *this==d;
-	}
-	bool operator<(const Date& d)
-	{
-		return 1 ^ (*this > d);
-	}
-	void Print()
-	{
-		cout << _year << "-" << _month << "-" << _day << endl;
-	}
-	Date& operator+=(int day)
-	{
-		_day += day;
-		while (_day > GetTureDay(_year, _month))
-		{
-			_day -= GetTureDay(_year, _month);
-			_month++;
-			if (_month == 13)
-			{
-				_year++;
-				_month = 1;
-			}
-		}
-		return *this;
-	}
-	Date operator+(int day)
-	{
-		Date ret(*this);
-		ret += day;
-		return ret;
-	}
-private:
-	int _year;
-	int _month;
-	int _day;
-};
-
-int main()
-{	
-	Date d1(2022, 9, 22);
-	Date d2;
-d2=	d1 +50;
-
-	
-	return 0;
-}
+//class Date
+//{
+//public:
+//
+//	int GetTureDay(int year, int month)
+//	{
+//	static	int monthArray[13] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };
+//		if (month == 2 && ((year % 4 == 0 && year & 100 != 0) || (year % 400 == 0)))
+//		{
+//			return 29;
+//		}
+//		else
+//		{
+//			return monthArray[month];
+//		}
+//	}
+//
+//	Date(int year=1, int month=1, int day=1)//构造函数-自动调用
+//	{
+//		_year = year;
+//		_month = month;
+//		_day = day;
+//	}
+//	~Date()
+//	{
+//		_year = 0;
+//		_month = 0;
+//		_day = 0;
+//	}
+//
+//	bool operator==(const Date& d)
+//	{
+//		return _year == d._year
+//			&& _month == d._month
+//			&& _day == d._day;
+//	}
+//	bool operator>(const Date& d)
+//	{
+//		if (_year > d._year)
+//		{
+//			return true;
+//		}
+//		else if (_year == d._year && _month > d._month)
+//		{
+//			return true;
+//		}
+//		else if (_year == d._year && _month == d._month && _day > d._day)
+//		{
+//			return true;
+//		}
+//			return false;
+//	}
+//	bool operator>=(const Date& d)
+//	{
+//		return *this > d|| *this==d;
+//	}
+//	bool operator<(const Date& d)
+//	{
+//		return 1 ^ (*this > d);
+//	}
+//	void Print()
+//	{
+//		cout << _year << "-" << _month << "-" << _day << endl;
+//	}
+//	Date& operator+=(int day)
+//	{
+//		_day += day;
+//		while (_day > GetTureDay(_year, _month))
+//		{
+//			_day -= GetTureDay(_year, _month);
+//			_month++;
+//			if (_month == 13)
+//			{
+//				_year++;
+//				_month = 1;
+//			}
+//		}
+//		return *this;
+//	}
+//	Date operator+(int day)
+//	{
+//		Date ret(*this);
+//		ret += day;
+//		return ret;
+//	}
+//private:
+//	int _year;
+//	int _month;
+//	int _day;
+//};
+//
+//int main()
+//{	
+//	Date d1(2022, 9, 22);
+//	Date d2;
+//d2=	d1 +50;
+//	return 0;
+//}
