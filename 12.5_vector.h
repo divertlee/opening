@@ -16,6 +16,61 @@ namespace Vect
 			,_endofstorage(nullptr)
 		{}
 
+
+		//vector(int n, const T& val = T())
+		//	: _start(nullptr)
+		//	, _finish(nullptr)
+		//	, _endofstorage(nullptr)
+		//{
+		//	reserve(n);//扩容
+		//	for (int i = 0; i < n; i++)
+		//	{
+		//		push_back(val);
+		//	}
+		//}
+
+		vector(size_t n, const T& val = T())
+			: _start(nullptr)
+			, _finish(nullptr)
+			, _endofstorage(nullptr)
+		{
+			reserve(n);//扩容
+			for (size_t i = 0; i < n; i++)
+			{
+				push_back(val);
+			}
+		}
+
+		template <class InputIterator>
+		vector(InputIterator first, InputIterator last)//构造函数：用迭代器区间去初始化
+			: _start(nullptr)
+			, _finish(nullptr)
+			, _endofstorage(nullptr)
+		{
+			while (first != last)
+			{
+				push_back(*first);
+				++first;
+			}
+		}
+
+		vector(const vector<T>& v)//拷贝构造
+			:_start(nullptr)
+			, _finish(nullptr)
+			, _endofstorage(nullptr)//因为要扩容，所以要提前初始化三个迭代器
+		{
+			vector<T> tmp(v.begin(),v.end());//用迭代器构造tmp；因为是用的const+引用所以要有中间者tmp
+			
+			swap(tmp);
+			
+		}
+
+		~vector()//析构函数
+		{
+			delete[] _start;
+			_start = _finish = _endofstorage = nullptr;
+		}
+
 		size_t size() const//size
 		{
 		return 	_finish - _start;
@@ -66,7 +121,10 @@ namespace Vect
 				T* tmp = new T[n];//开辟新空间
 				if (_start)//如果_start指向的空间不为空就要拷贝数据
 				{
-					memcpy(tmp, _start, sizeof(T) * oldsize);//把_start的数据拷贝到tmp上面
+					for (size_t i = 0; i < oldsize; i++)
+					{
+						tmp[i] = _start[i];
+					}
 					delete[]_start;//删除旧空间-空间不为空才需要释放
 				}
 				_start = tmp;//指向新空间
@@ -119,7 +177,7 @@ namespace Vect
 		}
 
 		//迭代器失效：当插入时要扩容，pos指针指向原来的空间，而_start指向新空间，在挪动数据时会出问题
-		void insert(iterator pos, const T& val)
+		iterator insert(iterator pos, const T& val)
 		{
 			assert(pos >= _start);
 			assert(pos < _finish);
@@ -138,11 +196,43 @@ namespace Vect
 				*(end + 1) = *(end);
 				--end;
 			}
-			pos = val;
-			++_finish;			
+			*pos = val;
+			++_finish;	
+			return pos;//返回迭代器
 		}
 
+		iterator erase(iterator pos)
+		{
+			assert(pos >= _start);
+			assert(pos < _finish);
+			iterator begin=pos+1;
+			while (begin<_finish)
+			{
+				*(begin-1) = *(begin );
+				++begin;
+			}
+			--_finish;
+			return pos;//返回迭代器
+		}
 
+		void clear()//清理---不影响容量
+		{
+			_finish = _start;
+		}
+
+		void swap(vector<T>& v)//交换
+		{
+			std::swap(_start, v._start);
+			std::swap(_finish, v._finish);
+			std::swap(_endofstorage,v._endofstorage);
+		}
+
+		vector<T>& operator=( vector<T> v)//先进来进入拷贝构造v拷贝构造一个临时对象
+		{
+			swap(v);
+			return *this;
+		}
+		
 	private:
 
 		iterator _start;//从0开始
